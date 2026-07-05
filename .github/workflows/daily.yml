@@ -12,6 +12,9 @@ jobs:
   research-and-trade:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: quant-platform
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
