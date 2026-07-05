@@ -26,7 +26,7 @@ from qrp.optimizer import solve_portfolio
 from qrp.construction import build_weights, vol_target_scale
 
 # ------------------------- configuration -------------------------
-ACCOUNT_VALUE   = 8_000        # informs position sizing / name count
+ACCOUNT_VALUE   = 100_000        # informs position sizing / name count
 MAX_NAMES       = 20           # hold the top ~20 (≈ $400/position)
 MIN_POSITION    = 200          # never target a position under $200
 DRIFT_BAND      = 0.10         # propose trades only if total drift > 10% (one-way)
