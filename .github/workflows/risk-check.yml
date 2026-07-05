@@ -1,0 +1,43 @@
+name: risk-check
+
+on:
+  schedule:
+    # 17:30 UTC = 1:30 PM ET during daylight saving (12:30 PM in winter).
+    - cron: "30 17 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  midday-defense:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: quant-platform
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Intraday risk check (defense only)
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python run_risk_check.py
+
+      - name: Save risk log
+        run: |
+          git config user.name "trading-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add output/risk_log.jsonl
+          git commit -m "risk check $(date -u +%Y-%m-%d)" || echo "nothing to record"
+          git push || true
