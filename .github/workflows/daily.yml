@@ -1,1 +1,44 @@
+name: daily-trading
 
+on:
+  schedule:
+    # 14:45 UTC = 10:45 AM ET during daylight saving (9:45 AM in winter).
+    # GitHub cron is always UTC. Weekdays only.
+    - cron: "45 14 * * 1-5"
+  workflow_dispatch: {}   # adds a manual "Run workflow" button for testing
+
+permissions:
+  contents: write         # lets the job commit output/ back to the repo
+
+jobs:
+  research-and-trade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Daily research scan
+        run: python run_daily.py
+
+      - name: Trade paper account to target
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python run_live.py
+
+      - name: Save state back to the repo
+        run: |
+          git config user.name "trading-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add output/targets.csv output/prices_latest.csv output/daily_brief.html output/live_log.jsonl
+          git commit -m "daily run $(date -u +%Y-%m-%d)" || echo "nothing changed today"
+          git push
