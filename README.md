@@ -1,6 +1,6 @@
 # quant-research-platform
 An end-to-end systematic equity research platform with automated daily paper trading. Every weekday, GitHub Actions scans the S&P 500 on four signals, runs a walk-forward tournament between four portfolio-construction methods (mean-variance, risk parity, HRP, inverse-vol), applies a volatility-targeting overlay, and trades an Alpaca paper account to target — then commits its own research report to this repo.
-How It Works
+# How It Works
 Every weekday at 10:45 AM ET, GitHub Actions runs the full research-to-execution pipeline with no human involvement:
 1. Universe & data. The platform pulls the current S&P 500 constituent list (Wikipedia, with a GitHub dataset mirror as fallback) and downloads two years of daily prices for all ~500 stocks via yfinance.
 2. Signal scoring. Every stock is scored on a blend of three classic cross-sectional signals — 12-1 momentum (Jegadeesh & Titman, 1993), 50/200-day trend, and 1-month reversal. Scores are winsorized and z-scored so signals are comparable, then combined with fixed weights. The top ~20 names by combined score become the candidate portfolio.
@@ -9,7 +9,7 @@ Every weekday at 10:45 AM ET, GitHub Actions runs the full research-to-execution
 5. Disciplined execution. New targets are only written when the portfolio has drifted more than 10% (one-way) from the current one — daily research, infrequent trading. When a rebalance triggers, the live loop reads the targets, queries the Alpaca paper account's actual equity and positions, computes the difference, and submits exactly the orders that close the gap (sells first, dust trades under $25 skipped). The loop is idempotent: run twice, the second run trades nothing.
 6. Reporting & state. Every run generates a self-contained HTML research brief — ranked watchlist, tournament results, predicted risk, target portfolio — and commits it back to this repo along with the target state, so each day's run remembers the last. The commit history is the audit trail.
 Key architecture principles: no look-ahead anywhere (every decision uses only data prior to the decision date); alpha, risk, and cost handled by separate modules; strategy code talks to a broker interface (Alpaca and a built-in simulator are interchangeable), never a vendor SDK directly.
-Run It Yourself
+# Run It Yourself
 No API keys required — without them, market data falls back to a calibrated synthetic universe and the broker falls back to a built-in simulator with the same interface as Alpaca.
 In Google Colab (or any Python 3.11+ environment):
 python!git clone https://github.com/HunterGilroy/quant-research-platform.git
@@ -20,7 +20,7 @@ python!python run_daily.py     # scan the S&P 500, run the tournament, write tar
 Open output/daily_brief.html for the ranked watchlist and tournament results. Run run_live.py a second time to see the idempotency check: zero orders.
 To trade a real Alpaca paper account (free, fake money, real markets): create paper API keys at alpaca.markets, then set ALPACA_API_KEY and ALPACA_SECRET_KEY as environment variables before running. The identical code connects automatically.
 To automate it: fork this repo, add your Alpaca keys as repository secrets (Settings → Secrets and variables → Actions), and the included workflow (.github/workflows/daily.yml) runs the full pipeline every weekday.
-Limitations
+# Limitations
 Stated plainly, because honest caveats are the difference between research and marketing:
 
 Paper trading only. Nothing here is investment advice, and this system has not demonstrated it can beat a benchmark — in backtesting on real 2015–2024 data, an earlier configuration underperformed an equal-weight benchmark (negative information ratio), driven by a low-volatility signal that failed for identifiable, regime-specific reasons. That finding motivated the current design; it does not guarantee it.
