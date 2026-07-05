@@ -2,13 +2,11 @@ name: daily-trading
 
 on:
   schedule:
-    # 14:45 UTC = 10:45 AM ET during daylight saving (9:45 AM in winter).
-    # GitHub cron is always UTC. Weekdays only.
     - cron: "45 14 * * 1-5"
-  workflow_dispatch: {}   # adds a manual "Run workflow" button for testing
+  workflow_dispatch: {}
 
 permissions:
-  contents: write         # lets the job commit output/ back to the repo
+  contents: write
 
 jobs:
   research-and-trade:
