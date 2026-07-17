@@ -1,5 +1,5 @@
 """
-run_daily.py — Daily research scan over a large universe (S&P 500).
+run_daily.py — Daily research scan over the S&P 500 research universe.
 
 Designed for a small account: scans ~500 stocks, ranks all of them on the
 signal blend, and maintains a CONCENTRATED target portfolio (top N names,
@@ -48,42 +48,14 @@ MIN_PRICE       = 5.0          # exclude sub-$5 stocks (untradeable spreads)
 
 
 def get_universe() -> list:
-    """S&P SmallCap 600 tickers — the quality-screened small-cap index.
-    Rationale: published anomalies are stronger and decay slower in small
-    caps, where large funds cannot deploy capital without moving prices.
-    Being small is the structural edge; this universe exploits it.
-    Fallback: the S&P 500 mirror (with a loud warning — large caps are a
-    different experiment)."""
-    import io, urllib.request
-    try:
-        req = urllib.request.Request(
-            "https://en.wikipedia.org/wiki/List_of_S%26P_600_companies",
-            headers={"User-Agent": "Mozilla/5.0 (research script)"})
-        html = urllib.request.urlopen(req, timeout=30).read().decode("utf-8")
-        tables = pd.read_html(io.StringIO(html))
-        for t in tables:
-            if "Symbol" in t.columns:
-                tickers = t["Symbol"].str.replace(".", "-", regex=False).tolist()
-                print(f"[universe] S&P SmallCap 600 via Wikipedia: {len(tickers)} tickers")
-                return tickers
-        raise RuntimeError("no Symbol column found")
-    except Exception as e:
-        print(f"[universe] S&P 600 fetch failed ({type(e).__name__}); trying large-cap mirror...")
-    try:
-        url = ("https://raw.githubusercontent.com/datasets/s-and-p-500-companies/"
-               "main/data/constituents.csv")
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        csv = urllib.request.urlopen(req, timeout=30).read().decode("utf-8")
-        tickers = pd.read_csv(io.StringIO(csv))["Symbol"].str.replace(
-            ".", "-", regex=False).tolist()
-        print(f"[universe] WARNING: fell back to S&P 500 large caps "
-              f"({len(tickers)} tickers) — NOT the small-cap experiment universe")
-        return tickers
-    except Exception as e:
-        from qrp.data import LIVE_UNIVERSE
-        print(f"[universe] mirror failed too ({type(e).__name__}); "
-              f"using built-in {len(LIVE_UNIVERSE)}-stock universe")
-        return LIVE_UNIVERSE
+    """S&P 500 constituents — the shared research universe.
+    Both systems in the study (this rule-based platform and the AI agent)
+    trade the identical static list (qrp/universe.py), so results are
+    directly comparable. No network fetch: the universe cannot silently
+    change mid-experiment."""
+    from qrp.universe import SP500
+    print(f"[universe] S&P 500 research universe: {len(SP500)} tickers")
+    return list(SP500)
 
 
 def load_universe_prices() -> tuple[pd.DataFrame, str]:
@@ -115,7 +87,7 @@ def _weights_for(method: str, prices: pd.DataFrame) -> pd.Series:
     rets = prices[top].pct_change().dropna().iloc[-252:]
     cov = pd.DataFrame(np.cov(rets.values.T), index=top, columns=top)
     corr = rets.corr()
-    max_w = max(0.08, (MIN_POSITION / ACCOUNT_VALUE) * 2)
+    max_w = 1.0   # research mode: no concentration cap — all-in one name is allowed
     return build_weights(method, alpha_full[top], cov, corr, max_weight=max_w)
 
 
@@ -202,7 +174,7 @@ def build_target(prices: pd.DataFrame):
     rets = prices[top].pct_change().dropna().iloc[-252:]
     cov = pd.DataFrame(np.cov(rets.values.T), index=top, columns=top)
     corr = rets.corr()
-    max_w = max(0.08, (MIN_POSITION / ACCOUNT_VALUE) * 2)
+    max_w = 1.0   # research mode: no concentration cap — all-in one name is allowed
     tgt = build_weights(method, alpha_full[top], cov, corr, max_weight=max_w)
 
     # Dust filter FIRST (a portfolio-composition decision)...
@@ -282,6 +254,7 @@ not investment advice.</p></body></html>"""
 
 
 def main():
+    os.makedirs("output", exist_ok=True)   # deleted/fresh repo must never crash the run
     prices, source = load_universe_prices()
 
     global SIGNAL_WEIGHTS
