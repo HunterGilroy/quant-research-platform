@@ -1,0 +1,21 @@
+timestamp_utc,bot,symbol,side,notional_usd,est_price,status,order_id,reject_reason,equity_before,cash_before,thesis,market_view
+2026-07-17T02:09:40+00:00,Python,ALB,buy,2674.16,119.45999908447266,submitted,5360e109-981c-4b68-80e7-05997c42383e,,100000.0,100000.0,rebalance to target weight 2.7%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:40+00:00,Python,AMAT,buy,1657.77,560.9299926757812,submitted,74e239f3-b475-4363-b696-69a28c0fa896,,100000.0,100000.0,rebalance to target weight 1.7%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,AMD,buy,1601.39,500.9400024414063,submitted,63371039-f5db-47f8-a325-1523958a9a54,,100000.0,100000.0,rebalance to target weight 1.6%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,CAT,buy,2528.07,877.1699829101562,submitted,1988c03a-bacb-40a8-bd74-5edef12a79dd,,100000.0,100000.0,rebalance to target weight 2.5%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,DELL,buy,2240.03,391.3800048828125,submitted,f0164559-71d6-4776-a9b0-e2bfda61505d,,100000.0,100000.0,rebalance to target weight 2.2%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,GLW,buy,1569.4,158.38999938964844,submitted,ae6592d2-ea58-4f2f-808f-cd90bbd5589f,,100000.0,100000.0,rebalance to target weight 1.6%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,GNRC,buy,2091.92,215.3800048828125,submitted,7394a56e-90fa-42eb-9568-39a69d162a7c,,100000.0,100000.0,rebalance to target weight 2.1%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,HPE,buy,2459.98,45.130001068115234,submitted,d431c623-86ae-426b-8816-f14c9c61914f,,100000.0,100000.0,rebalance to target weight 2.5%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,INTC,buy,1550.88,96.9800033569336,submitted,13d384ad-2537-402b-82ba-11c89368318e,,100000.0,100000.0,rebalance to target weight 1.6%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,JBL,buy,2209.53,307.0599975585937,submitted,a6255086-3c73-4ba0-adde-7915c44d3f5a,,100000.0,100000.0,rebalance to target weight 2.2%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,KEYS,buy,2467.67,312.760009765625,submitted,6a4bb83f-67ff-4ec2-b382-283532431c7f,,100000.0,100000.0,rebalance to target weight 2.5%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,KLAC,buy,1650.0,219.3699951171875,submitted,3892cbec-d176-41c2-9ac4-b24fd9d7fdf0,,100000.0,100000.0,rebalance to target weight 1.7%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,LRCX,buy,1500.13,320.9599914550781,submitted,bac6643d-4f68-4efe-8b25-622890597e71,,100000.0,100000.0,rebalance to target weight 1.5%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,MU,buy,1320.06,853.2000122070312,submitted,1108c020-bd85-4797-9c88-15481f84f311,,100000.0,100000.0,rebalance to target weight 1.3%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,NUE,buy,5014.03,235.6699981689453,submitted,4e6eb92b-e023-4ef2-869f-5846b89f1735,,100000.0,100000.0,rebalance to target weight 5.0%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,ON,buy,1744.18,88.12000274658203,submitted,a03acab9-017a-4261-b22d-9c1a36262fcf,,100000.0,100000.0,rebalance to target weight 1.7%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:41+00:00,Python,STLD,buy,3796.48,234.97999572753903,submitted,9e49b75b-3351-415c-9922-ffcd185a5c78,,100000.0,100000.0,rebalance to target weight 3.8%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:42+00:00,Python,STX,buy,1571.13,745.489990234375,submitted,73b637b0-b193-46c6-a598-553bbf6879ee,,100000.0,100000.0,rebalance to target weight 1.6%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:42+00:00,Python,TER,buy,1297.45,322.29998779296875,submitted,9ebf44e8-e2f8-4586-a6ea-87e3f39824ad,,100000.0,100000.0,rebalance to target weight 1.3%,rule-based rebalance toward optimizer targets
+2026-07-17T02:09:42+00:00,Python,WDC,buy,1377.69,466.80999755859375,submitted,e3ec16a3-90a9-4e70-af81-061326dbebfe,,100000.0,100000.0,rebalance to target weight 1.4%,rule-based rebalance toward optimizer targets

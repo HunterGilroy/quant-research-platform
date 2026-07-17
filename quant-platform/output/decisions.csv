@@ -1,0 +1,2 @@
+timestamp_utc,bot,woken_by,equity,cash,open_positions,trades_proposed,trades_executed,market_view,no_trade_reason
+2026-07-17T02:09:42+00:00,Python,scheduled_rebalance,100000.0,100000.0,none,20,20,rebalance to 20 targets,
