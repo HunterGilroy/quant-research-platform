@@ -120,7 +120,8 @@ class AlpacaBroker:
         buffer = 0.003   # small-cap spreads are wider
         limit = price * (1 + buffer) if side == "buy" else price * (1 - buffer)
         req = self._LimitOrderRequest(
-            symbol=symbol, qty=round(qty, 4),
+            symbol=symbol.replace("-", "."),   # yfinance BRK-B -> Alpaca BRK.B
+            qty=round(qty, 4),
             side=self._OrderSide.BUY if side == "buy" else self._OrderSide.SELL,
             time_in_force=self._TIF.DAY,
             limit_price=round(limit, 2))

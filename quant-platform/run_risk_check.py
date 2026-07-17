@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 import pandas as pd
 
 from qrp.broker import get_broker
+from qrp.tradelog import log_decision, log_trade
 
 POSITION_STOP   = -0.15     # single-name intraday stop-out threshold
 PORTFOLIO_ALERT = -0.05     # portfolio-level alert threshold
@@ -67,6 +68,12 @@ def run_check(broker, moves: pd.Series) -> dict:
             ref = float(last_prices.get(sym, pos.avg_price)) * (1 + mv)
             fill = broker.submit_order(sym, pos.qty, "sell", ref)
             record["stops"].append({"symbol": sym, "move": round(mv, 4), "fill": fill})
+            acct = broker.get_account()
+            log_trade(sym, "sell", pos.qty * ref, ref, "submitted",
+                      fill.get("order_id", "sim"), "",
+                      acct.get("equity", ""), acct.get("cash", ""),
+                      f"rule: single-name stop-out — {mv:+.1%} today breached "
+                      f"the {POSITION_STOP:.0%} intraday stop", "midday risk check")
             print(f"[risk] STOP-OUT {sym}: {mv:+.1%} today -> position liquidated")
 
     # Rule 2: portfolio-level alert (equal-weight proxy of held names)
@@ -87,6 +94,13 @@ def main():
     positions = broker.get_positions()
     moves = todays_moves(list(positions))
     record = run_check(broker, moves)
+    acct = broker.get_account()
+    log_decision("risk_check", acct.get("equity", ""), acct.get("cash", ""),
+                 "|".join(f"{s}:{p.qty:.2f}" for s, p in positions.items()) or "none",
+                 len(record["stops"]), len(record["stops"]),
+                 f"midday defensive check: {record['status']}",
+                 "" if record["stops"] else
+                 "no position breached the intraday stop; defense-only check adds no risk")
     os.makedirs("output", exist_ok=True)
     with open(LOG_PATH, "a") as f:
         f.write(json.dumps(record) + "\n")

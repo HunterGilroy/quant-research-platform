@@ -20,6 +20,8 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
+from qrp.tradelog import log_decision, log_trade
+
 MIN_TRADE_NOTIONAL = 25.0     # skip trades smaller than $25 (dust)
 
 
@@ -52,16 +54,36 @@ def run_cycle(broker, targets: pd.Series, prices: pd.Series,
 
     fills, skipped = [], []
     for t in trades:
+        tgt_w = float(targets.get(t["symbol"], 0.0))
+        thesis = (f"rebalance to target weight {tgt_w:.1%}" if tgt_w > 0
+                  else "exit: no longer in target portfolio")
         try:
-            fills.append(broker.submit_order(t["symbol"], t["qty"], t["side"], t["price"]))
+            fill = broker.submit_order(t["symbol"], t["qty"], t["side"], t["price"])
+            fills.append(fill)
+            log_trade(t["symbol"], t["side"], t["qty"] * t["price"], t["price"],
+                      "submitted", fill.get("order_id", "sim"), "",
+                      equity, acct.get("cash", ""), thesis,
+                      "rule-based rebalance toward optimizer targets")
         except Exception as e:
             # One untradeable symbol must never sink the whole rebalance.
             # Typical cause: a stale index constituent (delisted/renamed).
             skipped.append({"symbol": t["symbol"], "side": t["side"],
                             "reason": str(e)[:160]})
+            log_trade(t["symbol"], t["side"], t["qty"] * t["price"], t["price"],
+                      "rejected_by_broker", "", str(e)[:160],
+                      equity, acct.get("cash", ""), thesis, "")
             print(f"[live] SKIPPED {t['symbol']} ({t['side']}): "
                   f"{type(e).__name__} — order rejected, continuing")
     broker.save()
+
+    # Research CSV: one decision row per cycle — including no-trade cycles.
+    log_decision(
+        "scheduled_rebalance", equity, acct.get("cash", ""),
+        "|".join(f"{sym}:{p.qty:.2f}" for sym, p in positions.items()) or "none",
+        len(trades), len(fills),
+        f"rebalance to {len(targets)} targets",
+        "" if trades else ("portfolio already at target — every diff below "
+                           f"the ${MIN_TRADE_NOTIONAL:.0f} dust threshold"))
 
     record = {"ts": datetime.now(timezone.utc).isoformat(),
               "equity_before": equity, "n_targets": len(targets),

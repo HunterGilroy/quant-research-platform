@@ -9,7 +9,9 @@ Solves the canonical institutional mean-variance-cost problem:
 - alpha       : combined signal scores (from qrp.signals)
 - lambda      : risk aversion (bigger = more diversified / lower risk)
 - gamma       : turnover penalty (bigger = trade less; models t-costs)
-- max_weight  : single-name concentration cap
+- max_weight  : single-name concentration cap (1.0 = uncapped;
+                research mode runs uncapped so the optimizer may
+                concentrate the entire portfolio in one name)
 
 The turnover penalty is the piece amateurs skip and professionals never do:
 it makes the optimizer *reluctant* to trade unless the alpha justifies the cost.
@@ -23,7 +25,7 @@ def solve_portfolio(alpha: pd.Series, cov: pd.DataFrame,
                     w_prev: np.ndarray | None = None,
                     risk_aversion: float = 8.0,
                     turnover_penalty: float = 1.5,
-                    max_weight: float = 0.08) -> np.ndarray:
+                    max_weight: float = 1.0) -> np.ndarray:
     n = len(alpha)
     a = alpha.values
     S = cov.values * 252                      # annualize for sane lambda scaling

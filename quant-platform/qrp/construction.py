@@ -95,7 +95,7 @@ def inverse_vol_weights(cov: pd.DataFrame) -> np.ndarray:
 
 # ------------------------------------------------- unified interface
 def build_weights(method: str, alpha: pd.Series, cov: pd.DataFrame,
-                  corr: pd.DataFrame, max_weight: float = 0.12) -> pd.Series:
+                  corr: pd.DataFrame, max_weight: float = 1.0) -> pd.Series:
     """One entry point for every construction method. `alpha` and `cov`
     must already be restricted to the selected names."""
     if method == "optimizer":
