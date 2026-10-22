@@ -67,3 +67,4 @@
 {"ts": "2026-10-19T21:39:03.959918+00:00", "checked": 20, "stops": [], "alerts": [], "status": "all clear"}
 {"ts": "2026-10-20T20:46:21.179533+00:00", "checked": 21, "stops": [], "alerts": [], "status": "all clear"}
 {"ts": "2026-10-21T20:47:13.216435+00:00", "checked": 20, "stops": [], "alerts": [], "status": "all clear"}
+{"ts": "2026-10-22T20:41:43.372081+00:00", "checked": 20, "stops": [{"symbol": "MRNA", "move": -0.1757, "fill": {"symbol": "MRNA", "qty": 4.0662, "side": "sell", "limit_price": 154.97, "order_id": "acd9506c-582c-4a68-a937-a9f6b56b9e4b"}}], "alerts": [{"portfolio_move": -0.0586}], "status": "action taken"}

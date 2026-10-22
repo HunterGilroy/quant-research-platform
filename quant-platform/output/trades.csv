@@ -1566,3 +1566,4 @@ timestamp_utc,bot,symbol,side,notional_usd,est_price,status,order_id,reject_reas
 2026-10-22T18:50:20+00:00,Python,STX,buy,113.58,638.8099975585938,submitted,6f06fcc7-2665-4d8a-980d-b54f9e641710,,99041.9,43172.48,rebalance to target weight 2.0%,rule-based rebalance toward optimizer targets
 2026-10-22T18:50:20+00:00,Python,TER,buy,159.53,310.7300109863281,submitted,ba439357-9199-4148-80f0-71b5da778afb,,99041.9,43172.48,rebalance to target weight 1.9%,rule-based rebalance toward optimizer targets
 2026-10-22T18:50:20+00:00,Python,WDC,buy,77.06,351.510009765625,submitted,322ddb91-3a3d-49c6-b013-09a9cb8eebc7,,99041.9,43172.48,rebalance to target weight 1.9%,rule-based rebalance toward optimizer targets
+2026-10-22T20:41:43+00:00,Python,MRNA,sell,632.05,155.44090047160037,submitted,acd9506c-582c-4a68-a937-a9f6b56b9e4b,,99000.26,41859.89,rule: single-name stop-out — -17.6% today breached the -15% intraday stop,midday risk check
