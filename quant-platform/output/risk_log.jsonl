@@ -73,3 +73,4 @@
 {"ts": "2026-10-27T21:25:52.549951+00:00", "checked": 20, "stops": [], "alerts": [], "status": "all clear"}
 {"ts": "2026-10-28T21:48:26.384252+00:00", "checked": 20, "stops": [], "alerts": [], "status": "all clear"}
 {"ts": "2026-10-29T21:55:17.711998+00:00", "checked": 20, "stops": [{"symbol": "FTNT", "move": -0.2009, "fill": {"symbol": "FTNT", "qty": 24.4945, "side": "sell", "limit_price": 108.94, "order_id": "7cf9dbfe-8a4f-498c-aa59-eb1035a9f0ab"}}], "alerts": [], "status": "action taken"}
+{"ts": "2026-10-30T21:39:03.496678+00:00", "checked": 20, "stops": [{"symbol": "INTC", "move": -0.2858, "fill": {"symbol": "INTC", "qty": 28.3547, "side": "sell", "limit_price": 45.66, "order_id": "da236e62-e025-4686-9553-f2aa3413cd3b"}}], "alerts": [{"portfolio_move": -0.0573}], "status": "action taken"}
